@@ -15,13 +15,13 @@ morgan.token('body', function getBody (req) {
 })
 app.use(morgan(':method :url :body :status :res[content-length] :response-time ms'))
 
+
 const formatPerson = (person) => {
-	return{
+	return {
 		name: person.name, 
 		number: person.phoneNumber
 	}
 }
-
 let persons = [
 	{
       "name": "Arto Hellas",
@@ -51,6 +51,10 @@ app.get('/api/persons', (req, res) => {
 		.find({})
 		.then(people => {
 			res.json(people.map(formatPerson))
+			
+		})
+		.catch(error => {
+			console.log(error)
 		})
 })
 
@@ -63,38 +67,54 @@ app.get('/info', (req, res) => {
 
 }) 
 
-app.delete('/api/persons/:id', (req, res) => {
-	const id = Number(req.params.id)
-	persons = persons.filter(person => person.id !== id)
-
-	res.status(204).end()
-})
+{/*app.delete('/api/persons/:id', (req, res) => {
+	person
+		.findByIdAndRemove(res.params.id)
+		.then(result => {
+			res.status(204).end()
+		})
+		.catch(error => {
+			res.status(400).send({ error: 'Id not found'})
+		})
+})*/}
 
 
 app.post('/api/persons', (req, res) => {
-	const id = Math.random(1, 100)
+	
 	const body = req.body
-
-	const person = {
-		name: body.name, 
-		number: body.number,
-		id: id
-	}
-
-	if(body.name === undefined) {
+	const randomnumber = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
+	
+    if(body.name === undefined) {
 		return res.status(400).json({error: 'No name given'})
 
 	}
 	if(body.number === undefined){
 		return res.status(400).json({error: 'No number given'})
 	}
+
+	const person = new Person({
+		name: body.name, 
+		phoneNumber: body.number,
+		id: randomnumber
+
+	})
+
+	person
+		.save()
+		.then(savedPerson => {
+			res.json(formatPerson(savedPerson))
+		})
+		.catch(error => {
+			console.log(error)
+		})
+	{/*}
 	if(persons.filter(p => p.name === person.name).length > 0) {
 		return res.status(400).json({error: 'Name must be unique'})
 	}
 	else {
 	persons = persons.concat(person)
 	res.json(person)
-	}	
+	}*/}
 })
 
 const PORT = process.env.PORT || 3001

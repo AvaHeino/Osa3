@@ -4,9 +4,15 @@ const url = 'mongodb://tehtavantekija:olensalasana@ds229418.mlab.com:29418/osako
 
 mongoose.connect(url)
 
-const Person = mongoose.model('Person', {
+
+const personSchema = mongoose.Schema({
 	name: String, 
-	phoneNumber: String
+	phoneNumber: String,
+	id: Number
 })
+
+const Person = mongoose.model('Person', personSchema)
+
+
 
 module.exports = Person
