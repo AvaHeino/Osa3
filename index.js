@@ -22,29 +22,7 @@ const formatPerson = (person) => {
 		number: person.phoneNumber
 	}
 }
-let persons = [
-	{
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Martti Tienari",
-      "number": "040-123456",
-      "id": 2
-    },
-    {
-      "name": "Arto Järvinen",
-      "number": "040-123456",
-      "id": 3
-    },
-    {
-      "name": "Lea Kutvonen",
-      "number": "040-123456",
-      "id": 4
-    }
 
-]
 
 app.get('/api/persons', (req, res) => {
 	Person 
@@ -67,6 +45,8 @@ app.get('/info', (req, res) => {
 
 }) 
 
+
+
 app.delete('/api/persons/:id', (req, res) => {
 	Person
 		.findByIdAndRemove(req.params.id)
@@ -81,43 +61,27 @@ app.delete('/api/persons/:id', (req, res) => {
 
 
 app.post('/api/persons', (req, res) => {
-	
 	const body = req.body
-	console.log(body)
-	const randomnumber = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
-	
-    if(body.name === '') {
-		return res.status(400).json({error: 'No name given'})
 
+	if(body.name === '') {
+		return response.status(400).json({error: 'name missing'})
 	}
-	if(body.number === ''){
-		return res.status(400).json({error: 'No number given'})
-	}else {
+	if(body.number === '') {
+		return response.status(400).json({error:'number missing'})
+	}
 
 	const person = new Person({
-		name: body.name, 
+		name: body.name,
 		phoneNumber: body.number,
-		id: randomnumber
 
 	})
 
-	person
+	Person
 		.save()
 		.then(savedPerson => {
 			res.json(formatPerson(savedPerson))
 		})
-		.catch(error => {
-			console.log(error)
-		})
-	}
-	{/*}
-	if(persons.filter(p => p.name === person.name).length > 0) {
-		return res.status(400).json({error: 'Name must be unique'})
-	}
-	else {
-	persons = persons.concat(person)
-	res.json(person)
-	}*/}
+	
 })
 
 const PORT = process.env.PORT || 3001

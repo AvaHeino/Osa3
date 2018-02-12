@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const url = 'mongodb://tehtavantekija:olensalasana@ds229418.mlab.com:29418/osakolmetehtavat'
+const url = 'mongodb://tehtavantekija:*********@ds229418.mlab.com:29418/osakolmetehtavat'
 
 mongoose.connect(url)
 
@@ -11,7 +11,9 @@ const personSchema = mongoose.Schema({
 	id: Number
 })
 
+
 const Person = mongoose.model('Person', personSchema)
+
 
 
 
