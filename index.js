@@ -67,30 +67,32 @@ app.get('/info', (req, res) => {
 
 }) 
 
-{/*app.delete('/api/persons/:id', (req, res) => {
-	person
-		.findByIdAndRemove(res.params.id)
+app.delete('/api/persons/:id', (req, res) => {
+	Person
+		.findByIdAndRemove(req.params.id)
 		.then(result => {
 			res.status(204).end()
 		})
 		.catch(error => {
+			console.log(error)
 			res.status(400).send({ error: 'Id not found'})
 		})
-})*/}
+})
 
 
 app.post('/api/persons', (req, res) => {
 	
 	const body = req.body
+	console.log(body)
 	const randomnumber = Math.floor(Math.random() * (1000 - 1 + 1)) + 1;
 	
-    if(body.name === undefined) {
+    if(body.name === '') {
 		return res.status(400).json({error: 'No name given'})
 
 	}
-	if(body.number === undefined){
+	if(body.number === ''){
 		return res.status(400).json({error: 'No number given'})
-	}
+	}else {
 
 	const person = new Person({
 		name: body.name, 
@@ -107,6 +109,7 @@ app.post('/api/persons', (req, res) => {
 		.catch(error => {
 			console.log(error)
 		})
+	}
 	{/*}
 	if(persons.filter(p => p.name === person.name).length > 0) {
 		return res.status(400).json({error: 'Name must be unique'})
