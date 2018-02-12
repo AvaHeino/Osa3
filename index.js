@@ -15,12 +15,12 @@ morgan.token('body', function getBody (req) {
 })
 app.use(morgan(':method :url :body :status :res[content-length] :response-time ms'))
 
-const formatPerson = (person) => {
+{/*const formatPerson = (person) => {
 	return{
 		name: person.name, 
 		number: person.number
 	}
-}
+}*/}
 
 let persons = [
 	{
@@ -50,7 +50,7 @@ app.get('/api/persons', (req, res) => {
 	Person 
 		.find({})
 		.then(people => {
-			res.json(people.map(formatPerson))
+			res.json(people)
 		})
 })
 
